@@ -1,4 +1,5 @@
 var cacheName = "webstore-v1";
+// Storing all relevant files to cache in an array
 var cacheFiles = [
   "index.html", 
   "JavaScript/lessons.js", 
