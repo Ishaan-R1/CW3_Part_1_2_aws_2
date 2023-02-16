@@ -33,8 +33,7 @@ self.addEventListener("fetch", function (e) {
             //add a file to cache
             cache.put(e.request, response.clone());
             console.log(
-              "[Service Worker] Resource fetched and saved in the cache for: " +
-                e.request.url
+              "[Service Worker] "+e.request.url+" fetched and saved from cache."
             );
             return response;
           });
