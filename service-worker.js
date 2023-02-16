@@ -18,6 +18,7 @@ self.addEventListener("install", function (e) {
   );
 });
 self.addEventListener("fetch", function (e) {
+  // Add relevant external files to the cache
   e.respondWith(
     caches.match(e.request).then(function (cachedFile) {
       if (cachedFile) {
