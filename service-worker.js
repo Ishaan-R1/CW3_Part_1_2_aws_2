@@ -10,6 +10,7 @@ var cacheFiles = [
 self.addEventListener("install", function (e) {
   console.log("[Service Worker] Install");
   e.waitUntil(
+    // Uses the files from the cache, when online or offline
     caches.open(cacheName).then(function (cache) {
       console.log("[Service Worker] Caching files");
       return cache.addAll(cacheFiles);
@@ -19,7 +20,6 @@ self.addEventListener("install", function (e) {
 self.addEventListener("fetch", function (e) {
   e.respondWith(
     caches.match(e.request).then(function (cachedFile) {
-      //return the file if it is in the cache
       if (cachedFile) {
         console.log(
           "[Service Worker] Resource fetched from the cache for: " +
@@ -27,10 +27,10 @@ self.addEventListener("fetch", function (e) {
         );
         return cachedFile;
       } else {
-        //download the file if it is not in the cache
+        //download file not in the cache already
         return fetch(e.request).then(function (response) {
           return caches.open(cacheName).then(function (cache) {
-            //add the new file to the cache
+            //add a file to cache
             cache.put(e.request, response.clone());
             console.log(
               "[Service Worker] Resource fetched and saved in the cache for: " +
