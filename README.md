@@ -1,7 +1,6 @@
-# CW2 Part 2
-GitHub Pages: 
-https://ishaan-r1.github.io/CW2_P2/ 
-GitHub Repository: 
-https://github.com/Ishaan-R1/CW2_P2.git 
-AWS route to return lessons: 
-https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons
+# CW3 Part 1
+
+GitHub Pages:
+https://ishaan-r1.github.io/CW3_Part_1_2/
+GitHub Repository:
+https://github.com/Ishaan-R1/CW3_Part_1_2.git
