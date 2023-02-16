@@ -13,6 +13,7 @@ let app = new Vue({
       image_path: "https://cdn-icons-png.flaticon.com/512/221/221945.png",
       image_text: "Maths Icon",
     },
+    // Getting lessons from lessons.js instead of AWS
     subjects: arrayOfObjects,
     // Call array of objects from lessons.js file into 'subjects' object
     // subjects: [],
