@@ -23,8 +23,7 @@ self.addEventListener("fetch", function (e) {
     caches.match(e.request).then(function (cachedFile) {
       if (cachedFile) {
         console.log(
-          "[Service Worker] Resource fetched from the cache for: " +
-            e.request.url
+          "[Service Worker] "+e.request.url+" fetched from cache."
         );
         return cachedFile;
       } else {
