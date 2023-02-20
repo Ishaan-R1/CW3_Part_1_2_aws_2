@@ -2,6 +2,9 @@ let app = new Vue({
   el: "#App",
   data: {
     showProduct: true,
+    showTestConsole: false,
+    testConsole: true,
+
     path: "https://cdn-icons-png.flaticon.com/512/221/221945.png",
     text: "Maths Icon",
     // Display data of 1 subject
@@ -14,14 +17,13 @@ let app = new Vue({
       image_text: "Maths Icon",
     },
     // Getting lessons from lessons.js instead of AWS
-    subjects: arrayOfObjects,
+    // subjects: arrayOfObjects,
     // Call array of objects from lessons.js file into 'subjects' object
-    // subjects: [],
+    subjects: [],
     orderID: [],
     search: [],
     getID: [],
     getSpaces: [],
-
 
     // Object to hold data of user inputted order details
     order: {
@@ -49,25 +51,46 @@ let app = new Vue({
     },
     // Empty cart array to push data to once user selects button
     cart: [],
+    serverURL: "http://localhost:3000/collections/lessons",
+    awsServerURL:
+      "https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons",
   },
   created: function () {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js");
     }
     // Fetch to retrieve lessons with GET
-    // fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons").then(function (
-    //   response
-    // ) {
-    //   response.json().then(function (json) {
-    //     console.log(json);
-    //       // Push JSON data to subjects array when page is loaded
-    //     app.subjects = this.subjects;
-    //   });
-    // });
+    fetch(this.awsServerURL).then(function (response) {
+      response.json().then(function (json) {
+        console.log(json);
+        // Push JSON data to subjects array when page is loaded
+        app.subjects = json;
+      });
+    });
 
     // setInterval(this.searchLessons, 1000);
   },
   methods: {
+    toggleTestConsole() {
+      this.showTestConsole = !this.showTestConsole;
+    },
+    reloadPage() {
+      window.location.reload();
+    },
+    deleteAllCaches() {
+      caches.keys().then(function (names) {
+        for (let name of names) caches.delete(name);
+      });
+      console.log("All Caches Deleted");
+    },
+    unregisterAllServiceWorkers() {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+      console.log("ServiceWorkers Unregistered");
+    },
     // Fetch to send search request of subject name to backend
     searchLessons() {
       // let subject = this.searchBar.input2;
@@ -77,7 +100,7 @@ let app = new Vue({
       // ) {
       //   response.json().then(function (json) {
       //     console.log(json);
-      //     // Push JSON data to subjects array which loads on click 
+      //     // Push JSON data to subjects array which loads on click
       //     app.subjects = json;
       //   });
       // });
@@ -88,7 +111,7 @@ let app = new Vue({
       'orders' collection via POST in 'lesson_id' field */
       this.orderID.push(id);
     },
-    // Function to POST user first name, number, spaces and lesson IDs 
+    // Function to POST user first name, number, spaces and lesson IDs
     postOrder(firstName, phone_number, id) {
       const order = {
         name: firstName,
@@ -111,28 +134,28 @@ let app = new Vue({
     },
     // Function to execute once user confirms order
     updateSpaces1() {
-      // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson     
-    // for (let i = 0; i < this.cart.length; i++) {      
-    //     fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons/" + this.getID[i].toString(), {
-    //       method: "PUT",
-    //       body: JSON.stringify({
-    //         // Spaces is decremented by 1 and updated in database
-    //         spaces: this.getSpaces[i],
-    //       }),
-    //       headers: {
-    //         "Content-type": "application/json",
-    //       },
-    //     })
-    //       // Convert data to JSON
-    //       .then((response) => response.json())
-    //       .then((json) => console.log(json));
-    //   }
-      },
+      // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson
+      // for (let i = 0; i < this.cart.length; i++) {
+      //     fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons/" + this.getID[i].toString(), {
+      //       method: "PUT",
+      //       body: JSON.stringify({
+      //         // Spaces is decremented by 1 and updated in database
+      //         spaces: this.getSpaces[i],
+      //       }),
+      //       headers: {
+      //         "Content-type": "application/json",
+      //       },
+      //     })
+      //       // Convert data to JSON
+      //       .then((response) => response.json())
+      //       .then((json) => console.log(json));
+      //   }
+    },
     updateSpaces2(spacesNum, id) {
-      // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson   
-        this.getID.push(id);
-        this.getSpaces.push(spacesNum);
-      },
+      // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson
+      this.getID.push(id);
+      this.getSpaces.push(spacesNum);
+    },
     // Method to decrease number of spaces once user clicks 'Add to Cart' button
     decrementSpaces() {
       if (this.spaces > 0) {
