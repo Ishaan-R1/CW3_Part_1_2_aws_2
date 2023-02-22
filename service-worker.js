@@ -1,39 +1,42 @@
-var cacheName = "webstore-v1";
-// Storing all relevant files to cache in an array
+let cache = "webstore-v1";
+// Storing all relevant files to cache in an array to work offline
 var cacheFiles = [
-  "index.html", 
-  "JavaScript/lessons.js", 
+  "index.html",
+  "JavaScript/lessons.js",
   "Images/cart.png",
+  // Two copies of icon image
   "Images/shop-icon-512.png",
-  "Images/shop-icon-192.png"
+  "Images/shop-icon-192.png",
 ];
-self.addEventListener("install", function (e) {
+self.addEventListener("install", function (event) {
   console.log("[Service Worker] Install");
-  e.waitUntil(
-    // Uses the files from the cache, when online or offline
-    caches.open(cacheName).then(function (cache) {
-      console.log("[Service Worker] Caching files");
+  event.waitUntil(
+    // Caches local files stored in array
+    caches.open(cache).then(function (cache) {
+      console.log("[Service Worker] Caching Relevant Files");
       return cache.addAll(cacheFiles);
     })
   );
 });
-self.addEventListener("fetch", function (e) {
-  // Add relevant external files to the cache
-  e.respondWith(
-    caches.match(e.request).then(function (cachedFile) {
+self.addEventListener("fetch", function (event) {
+  // Fetch external files from the cache to use the files from the cache, when online or offline
+  event.respondWith(
+    caches.match(event.request).then(function (cachedFile) {
       if (cachedFile) {
         console.log(
-          "[Service Worker] "+e.request.url+" fetched from cache."
+          "[Service Worker] " + event.request.url + " fetched from cache."
         );
         return cachedFile;
       } else {
-        //download file not in the cache already
-        return fetch(e.request).then(function (response) {
-          return caches.open(cacheName).then(function (cache) {
-            //add a file to cache
-            cache.put(e.request, response.clone());
+        // If file is not already in cache, then automatically add file
+        return fetch(event.request).then(function (response) {
+          return caches.open(cache).then(function (cache) {
+            // Add the file to cache
+            cache.put(event.request, response.clone());
             console.log(
-              "[Service Worker] "+e.request.url+" fetched and saved from cache."
+              "[Service Worker] " +
+                event.request.url +
+                " fetched and saved from cache."
             );
             return response;
           });
