@@ -39,20 +39,18 @@
       <button class="searchBtn" v-on:click="searchLessons()">Search</button>
     </div>
 
-    <button v-if="testConsole" @click="toggleTestConsole">Test Console</button>
-    <div v-if="showTestConsole">
-      <button @click="reloadPage" class="test-elem">
+    <button class="testConsoleBtn" v-if="testConsole" @click="toggleTestConsole">Test Console</button>
+    <div class="testConsoleBdr" v-if="showTestConsole">
+      <button @click="reloadPage" class="testConsole">
         Reload Page
       </button>
-      <button @click="unregisterAllServiceWorkers" class="test-elem">
-        <span class="fab fa-uniregistry"></span>
+      <button @click="unregisterAllServiceWorkers" class="testConsole">
         Unregister All ServiceWorkers
       </button>
-      <button @click="deleteAllCaches" class="test-elem">
-        <span class="fas fa-trash"></span>
+      <button @click="deleteAllCaches" class="testConsole">
         Delete All Caches
       </button>
-      <strong class="test-elem">HTTPS Test: </strong>
+      <strong class="testConsole">HTTPS Test: </strong>
       <a v-bind:href="awsServerURL" target="_blank">link</a>
     </div>
 
