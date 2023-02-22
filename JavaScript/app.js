@@ -93,17 +93,17 @@ let app = new Vue({
     },
     // Fetch to send search request of subject name to backend
     searchLessons() {
-      // let subject = this.searchBar.input2;
-      // // Get user input of a subject and use fetch to retreive data from URL
-      // fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/search/lessons/" + subject).then(function (
-      //   response
-      // ) {
-      //   response.json().then(function (json) {
-      //     console.log(json);
-      //     // Push JSON data to subjects array which loads on click
-      //     app.subjects = json;
-      //   });
-      // });
+      let subject = this.searchBar.input2;
+      // Get user input of a subject and use fetch to retreive data from URL
+      fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/search/lessons/" + subject).then(function (
+        response
+      ) {
+        response.json().then(function (json) {
+          console.log(json);
+          // Push JSON data to subjects array which loads on click
+          app.subjects = json;
+        });
+      });
     },
     // Function to get the correct order ID to save order data to
     getLessonID(id) {
@@ -121,35 +121,35 @@ let app = new Vue({
         spaces: this.cart.length,
       };
       // Fetch to save new order with POST when submitted
-      // fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/orders", {
-      //   method: "POST",
-      //   body: JSON.stringify(order),
-      //   headers: {
-      //     "Content-type": "application/json",
-      //   },
-      // })
-      //   // Convert data to JSON
-      //   .then((response) => response.json())
-      //   .then((json) => console.log(json));
+      fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/orders", {
+        method: "POST",
+        body: JSON.stringify(order),
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        // Convert data to JSON
+        .then((response) => response.json())
+        .then((json) => console.log(json));
     },
     // Function to execute once user confirms order
     updateSpaces1() {
       // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson
-      // for (let i = 0; i < this.cart.length; i++) {
-      //     fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons/" + this.getID[i].toString(), {
-      //       method: "PUT",
-      //       body: JSON.stringify({
-      //         // Spaces is decremented by 1 and updated in database
-      //         spaces: this.getSpaces[i],
-      //       }),
-      //       headers: {
-      //         "Content-type": "application/json",
-      //       },
-      //     })
-      //       // Convert data to JSON
-      //       .then((response) => response.json())
-      //       .then((json) => console.log(json));
-      //   }
+      for (let i = 0; i < this.cart.length; i++) {
+          fetch("https://afterschoolapp2-env.eba-wwaj2wgs.eu-west-2.elasticbeanstalk.com/collections/lessons/" + this.getID[i].toString(), {
+            method: "PUT",
+            body: JSON.stringify({
+              // Spaces is decremented by 1 and updated in database
+              spaces: this.getSpaces[i],
+            }),
+            headers: {
+              "Content-type": "application/json",
+            },
+          })
+            // Convert data to JSON
+            .then((response) => response.json())
+            .then((json) => console.log(json));
+        }
     },
     updateSpaces2(spacesNum, id) {
       // Fetch to update lesson spaces with PUT - ID is taken once user clicks on specific lesson
